@@ -23,6 +23,7 @@ jobs:
           import json
           import os
           import requests
+          import re
           
           # 创建输出目录
           os.makedirs("output", exist_ok=True)
@@ -45,7 +46,7 @@ jobs:
                   "name": "Shamiko",
                   "description": "Shamiko 是一个 Magisk/KernelSU 模块，用于隐藏 root 权限和框架，帮助通过安全检测。",
                   "update_url": "https://api.github.com/repos/LSPosed/LSPosed.github.io/releases/latest",
-                  "type": "github"
+                  "type": "github_shamiko"
               }
           ]
           
@@ -66,6 +67,13 @@ jobs:
                       version = release_info["tag_name"]
                       # 对于 GitHub 发布，我们用不带 v 的版本号作为 versionCode
                       version_code = int(version.replace("v", "").replace(".", ""))
+                  elif app["type"] == "github_shamiko":
+                      release_info = response.json()
+                      # 从 name 字段获取版本号，格式如 "Shamiko v1.2.2"
+                      version_match = re.search(r"v(\d+\.\d+\.\d+)", release_info["name"])
+                      version = f"v{version_match.group(1)}" if version_match else release_info["name"]
+                      # 从 tag_name 获取 versionCode，格式如 "shamiko-383"
+                      version_code = int(release_info["tag_name"].split("-")[1])
                   
                   # 创建标准格式的版本信息
                   version_info = {

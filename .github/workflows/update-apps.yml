@@ -32,9 +32,15 @@ jobs:
               {
                   "name": "Intelligen",
                   "description": "Intelligen 是一个由C++编写的magisk/Kernelsu模块，智能分类管理文件，让你的设备文件夹不再混乱。你可以自定义文件夹的分类规则，使设备文件夹更加整洁。",
-                  "update_url": "https://raw.githubusercontent.com/YumeYuka/intelligent/master/update.json"
+                  "update_url": "https://raw.githubusercontent.com/YumeYuka/intelligent/master/update.json",
+                  "type": "json"
+              },
+              {
+                  "name": "ZygiskNext",
+                  "description": "ZygiskNext 是一个 Zygisk 实现，用于在 KernelSU 和 Magisk 中提供 Zygisk API 支持。",
+                  "update_url": "https://api.github.com/repos/Dr-TSNG/ZygiskNext/releases/latest",
+                  "type": "github"
               }
-              # 在这里添加更多应用...
           ]
           
           # 用于存储所有应用信息的列表
@@ -44,15 +50,24 @@ jobs:
               try:
                   # 获取云端版本信息
                   response = requests.get(app["update_url"])
-                  cloud_info = response.json()
+                  
+                  if app["type"] == "json":
+                      cloud_info = response.json()
+                      version_code = cloud_info["versionCode"]
+                      version = cloud_info["version"]
+                  elif app["type"] == "github":
+                      release_info = response.json()
+                      version = release_info["tag_name"]
+                      # 对于 GitHub 发布，我们用不带 v 的版本号作为 versionCode
+                      version_code = int(version.replace("v", "").replace(".", ""))
                   
                   # 创建标准格式的版本信息
                   version_info = {
                       "name": app["name"],
                       "description": app["description"],
                       "version": {
-                          "versionCode": cloud_info["versionCode"],
-                          "version": cloud_info["version"]
+                          "versionCode": version_code,
+                          "version": version
                       }
                   }
                   

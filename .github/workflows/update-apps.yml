@@ -40,6 +40,12 @@ jobs:
                   "description": "ZygiskNext 是一个 Zygisk 实现，用于在 KernelSU 和 Magisk 中提供 Zygisk API 支持。",
                   "update_url": "https://api.github.com/repos/Dr-TSNG/ZygiskNext/releases/latest",
                   "type": "github"
+              },
+              {
+                  "name": "Shamiko",
+                  "description": "Shamiko 是一个 Magisk/KernelSU 模块，用于隐藏 root 权限和框架，帮助通过安全检测。",
+                  "update_url": "https://api.github.com/repos/LSPosed/LSPosed.github.io/releases/latest",
+                  "type": "github"
               }
           ]
           

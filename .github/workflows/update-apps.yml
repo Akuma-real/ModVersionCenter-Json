@@ -54,6 +54,12 @@ jobs:
                   "description": "XChat 是一个 Xposed 模块，提供了聊天应用的增强功能。",
                   "update_url": "https://api.github.com/repos/Xposed-Modules-Repo/com.xchat/releases/latest",
                   "type": "github_xchat"
+              },
+              {
+                  "name": "去广告模块",
+                  "description": "一个强大的广告屏蔽模块，可以移除各种应用中的广告。",
+                  "update_url": "https://raw.githubusercontent.com/lingeringsound/10007/refs/heads/main/update.json",
+                  "type": "json_ads"
               }
           ]
           
@@ -69,12 +75,17 @@ jobs:
                       cloud_info = response.json()
                       version_code = cloud_info["versionCode"]
                       version = cloud_info["version"]
-                      update_time = datetime.now().strftime("%Y-%m-%d")  # 使用当前时间
+                      update_time = datetime.now().strftime("%Y-%m-%d")
+                  elif app["type"] == "json_ads":
+                      cloud_info = response.json()
+                      version_code = cloud_info["versionCode"]
+                      version = cloud_info["version"]  # 格式如 "橴炫v239"
+                      update_time = datetime.now().strftime("%Y-%m-%d")
                   elif app["type"] == "github":
                       release_info = response.json()
                       version = release_info["tag_name"]
                       version_code = int(version.replace("v", "").replace(".", ""))
-                      update_time = release_info["published_at"].split("T")[0]  # GitHub的发布时间
+                      update_time = release_info["published_at"].split("T")[0]
                   elif app["type"] == "github_shamiko":
                       release_info = response.json()
                       version_match = re.search(r"v(\d+\.\d+\.\d+)", release_info["name"])

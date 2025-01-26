@@ -1,0 +1,79 @@
+name: Update Apps Version
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # 每12小时运行一次
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Process version info
+        run: |
+          python -c '
+          import json
+          import os
+          import requests
+          
+          # 创建输出目录
+          os.makedirs("output", exist_ok=True)
+          
+          # 应用信息列表
+          apps = [
+              {
+                  "name": "Intelligen",
+                  "description": "Intelligen 是一个由C++编写的magisk/Kernelsu模块，智能分类管理文件，让你的设备文件夹不再混乱。你可以自定义文件夹的分类规则，使设备文件夹更加整洁。",
+                  "update_url": "https://raw.githubusercontent.com/YumeYuka/intelligent/master/update.json"
+              }
+          ]
+          
+          for app in apps:
+              try:
+                  # 获取云端版本信息
+                  response = requests.get(app["update_url"])
+                  cloud_info = response.json()
+                  
+                  # 创建标准格式的版本信息
+                  version_info = {
+                      "name": app["name"],
+                      "description": app["description"],
+                      "cloud_version": {
+                          "versionCode": cloud_info["versionCode"],
+                          "version": cloud_info["version"]
+                      },
+                      "local_version": {
+                          "versionCode": cloud_info["versionCode"],
+                          "version": cloud_info["version"]
+                      }
+                  }
+                  
+                  # 保存到输出文件
+                  app_name = app["name"].lower()
+                  with open(f"output/{app_name}.json", "w", encoding="utf-8") as f:
+                      json.dump(version_info, f, ensure_ascii=False, indent=2)
+                      
+              except Exception as e:
+                  print(f"处理 {app["name"]} 时出错: {str(e)}")
+          '
+
+      - name: Deploy to localversion branch
+        run: |
+          git init
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          mv output/* .
+          rm -rf output
+          git add .
+          git commit -m "Update apps version info"
+          git branch -M localversion
+          git remote add origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push -f origin localversion 

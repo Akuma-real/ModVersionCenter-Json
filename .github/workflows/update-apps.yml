@@ -65,7 +65,7 @@ jobs:
                   print(f"处理 {app["name"]} 时出错: {str(e)}")
           '
 
-      - name: Deploy to localversion branch
+      - name: Deploy to data branch
         run: |
           git init
           git config --global user.name "GitHub Action"
@@ -74,6 +74,6 @@ jobs:
           rm -rf output
           git add .
           git commit -m "Update apps version info"
-          git branch -M localversion
+          git branch -M data
           git remote add origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push -f origin localversion 
+          git push -f origin data 

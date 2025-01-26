@@ -34,7 +34,11 @@ jobs:
                   "description": "Intelligen 是一个由C++编写的magisk/Kernelsu模块，智能分类管理文件，让你的设备文件夹不再混乱。你可以自定义文件夹的分类规则，使设备文件夹更加整洁。",
                   "update_url": "https://raw.githubusercontent.com/YumeYuka/intelligent/master/update.json"
               }
+              # 在这里添加更多应用...
           ]
+          
+          # 用于存储所有应用信息的列表
+          all_apps_info = []
           
           for app in apps:
               try:
@@ -46,23 +50,21 @@ jobs:
                   version_info = {
                       "name": app["name"],
                       "description": app["description"],
-                      "cloud_version": {
-                          "versionCode": cloud_info["versionCode"],
-                          "version": cloud_info["version"]
-                      },
-                      "local_version": {
+                      "version": {
                           "versionCode": cloud_info["versionCode"],
                           "version": cloud_info["version"]
                       }
                   }
                   
-                  # 保存到输出文件
-                  app_name = app["name"].lower()
-                  with open(f"output/{app_name}.json", "w", encoding="utf-8") as f:
-                      json.dump(version_info, f, ensure_ascii=False, indent=2)
+                  # 添加到所有应用列表
+                  all_apps_info.append(version_info)
                       
               except Exception as e:
                   print(f"处理 {app["name"]} 时出错: {str(e)}")
+          
+          # 保存所有应用信息到 all.json
+          with open("output/all.json", "w", encoding="utf-8") as f:
+              json.dump({"apps": all_apps_info}, f, ensure_ascii=False, indent=2)
           '
 
       - name: Deploy to data branch

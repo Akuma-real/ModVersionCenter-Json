@@ -1,0 +1,49 @@
+{
+  "apps": [
+    {
+      "name": "Intelligen",
+      "description": "Intelligen 是一个由C++编写的magisk/Kernelsu模块，智能分类管理文件，让你的设备文件夹不再混乱。你可以自定义文件夹的分类规则，使设备文件夹更加整洁。",
+      "version": {
+        "versionCode": 250210,
+        "version": "V1.0.9_Beta",
+        "updateTime": "2025-02-17"
+      }
+    },
+    {
+      "name": "ZygiskNext",
+      "description": "ZygiskNext 是一个 Zygisk 实现，用于在 KernelSU 和 Magisk 中提供 Zygisk API 支持。",
+      "version": {
+        "versionCode": 127,
+        "version": "v1.2.7",
+        "updateTime": "2025-01-19"
+      }
+    },
+    {
+      "name": "Shamiko",
+      "description": "Shamiko 是一个 Magisk/KernelSU 模块，用于隐藏 root 权限和框架，帮助通过安全检测。",
+      "version": {
+        "versionCode": 383,
+        "version": "v1.2.1",
+        "updateTime": "2025-01-04"
+      }
+    },
+    {
+      "name": "XChat",
+      "description": "XChat 是一个 Xposed 模块，提供了聊天应用的增强功能。",
+      "version": {
+        "versionCode": 0,
+        "version": "1697-1.2.2",
+        "updateTime": "2025-01-31"
+      }
+    },
+    {
+      "name": "去广告模块",
+      "description": "一个强大的广告屏蔽模块，可以移除各种应用中的广告。",
+      "version": {
+        "versionCode": 241,
+        "version": "橴炫v240",
+        "updateTime": "2025-02-17"
+      }
+    }
+  ]
+}
